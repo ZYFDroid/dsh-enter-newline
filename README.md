@@ -2,6 +2,12 @@
 
 DSH（DeepSeek Harness）web 插件：**输入框里 Enter 换行、Ctrl/Cmd+Enter 发送**。
 
+仓库：<https://github.com/ZYFDroid/dsh-enter-newline> ｜ 一行安装：
+
+```sh
+dsh plugin --profile web add git+https://github.com/ZYFDroid/dsh-enter-newline.git
+```
+
 专为喜欢在 Prompt 里写一大段条理清晰 Markdown 的用户设计——默认的「Enter 发送 / Shift+Enter 换行」改成「Enter 换行 / Ctrl+Enter 发送」，同时保留：
 
 | 按键 | 行为 |
@@ -117,15 +123,35 @@ editor.registerCommand(cn$1 /* KEY_ENTER_COMMAND */, (event) => {
 
 前置：`dsh` 已安装、`pnpm` 可用（`dsh plugin` 是 pnpm 转发器）。
 
+### 从 GitHub 安装（普通用户）
+
 ```sh
-# 在本插件目录（或任意路径）：
-dsh plugin --profile web add link:C:/Users/ZYFDroid/Documents/DSHStudy/dsh-enter-newline
-# link: 是符号链接安装，改源码即生效（重启 web 后）；发布场景可用 file:<tarball>
+dsh plugin --profile web add git+https://github.com/ZYFDroid/dsh-enter-newline.git
+
+# 需要可复现时，在末尾用 # 锁到某个 tag / commit / 分支（默认分支 master）：
+#   git+https://github.com/ZYFDroid/dsh-enter-newline.git#<commit-sha>
+#   git+https://github.com/ZYFDroid/dsh-enter-newline.git#v0.2.0
+#   git+https://github.com/ZYFDroid/dsh-enter-newline.git#master
 ```
 
-`dsh plugin` 会检查 `dsh.bundle.patch` 并把 `dsh-enter-newline` 追加进 `dsh.profile.bundles`，无需手改 profile 文件。
+- `dsh plugin` 会把参数原样转发给 pnpm 并在 profile 目录里执行；它会读取包里的 `dsh.bundle.patch`，把 `dsh-enter-newline` 追加进 `dsh.profile.bundles`，**无需手改 profile 文件**。
+- 本包**没有** `prepare` 脚本（构建产物 `lib/client.js`、`lib/index.js` 已随仓库提交），所以 pnpm 不会因为构建脚本弹 `allowBuilds` 确认；`.gitignore` 只排除 `lib/*.map`。
+- 装完**重启 `dsh web`** 生效（client 插件在 boot 时进清单，变更无热更）。
+- 如果宿主机器访问不了 GitHub（DNS/代理），改用下面的本地安装，或者先手动 clone 再本地装。
 
-**重启 `dsh web`** 后生效（client 插件在 boot 时进清单；变更需重启，无热更）。
+### 本地源码安装（开发 / 改代码即生效）
+
+```sh
+# 在本仓库目录（或任意路径）：
+dsh plugin --profile web add link:C:/Users/ZYFDroid/Documents/DSHStudy/dsh-enter-newline
+# link: 是符号链接安装：改 src/ 后 npm run build，再刷新页面即可，不必重装
+# 也可以打 tarball 后用 file:<path>:
+#   npm pack && dsh plugin --profile web add file:./dsh-enter-newline-0.2.0.tgz
+```
+
+> 同一个包名不要同时用 `link:` 和 `git+` 两个来源装——client-modules 会拒绝两个 loader 源解析到同一个包名（“Distinct active Loader sources resolving to one package name are rejected”）。切换前先 `remove` 旧的。
+
+**重启 `dsh web`** 后生效（client 插件在 boot 时进清单；变更需重启，无热更）。若只是想拿到新构建产物，先刷新页面（Ctrl+F5）试试——bundle URL 带 `?rev=<mtime+size>`，boot 时会重新读盘。
 
 ## 开发 / 重建
 

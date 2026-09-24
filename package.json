@@ -45,5 +45,21 @@
     "esbuild": "^0.25.0",
     "typescript": "^5.6.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ZYFDroid/dsh-enter-newline.git"
+  },
+  "homepage": "https://github.com/ZYFDroid/dsh-enter-newline#readme",
+  "bugs": {
+    "url": "https://github.com/ZYFDroid/dsh-enter-newline/issues"
+  },
+  "keywords": [
+    "dsh",
+    "deepseek-harness",
+    "plugin",
+    "composer",
+    "enter",
+    "newline"
+  ],
   "license": "MIT"
 }
