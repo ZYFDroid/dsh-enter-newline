@@ -1,0 +1,49 @@
+{
+  "name": "dsh-enter-newline",
+  "version": "0.2.0",
+  "description": "DSH web plugin: plain Enter inserts a newline in the composer, Ctrl/Cmd+Enter sends — made for long markdown prompts.",
+  "type": "module",
+  "main": "lib/index.js",
+  "exports": {
+    ".": "./lib/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": []
+    }
+  },
+  "files": [
+    "lib",
+    "src",
+    "cordis.patch.yml",
+    "dsh.plugin.json",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "node build.mjs",
+    "typecheck": "tsc --noEmit",
+    "verify": "node scripts/verify.mjs",
+    "check": "npm run typecheck && npm run build && npm run verify"
+  },
+  "peerDependencies": {
+    "@deepseek-ai/cordis": "^4.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@deepseek-ai/cordis": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@deepseek-ai/cordis": "^4.0.4",
+    "@types/node": "^26.6.2",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.6.0"
+  },
+  "license": "MIT"
+}

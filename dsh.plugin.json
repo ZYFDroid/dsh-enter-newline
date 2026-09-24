@@ -1,0 +1,12 @@
+{
+  "name": "dsh-enter-newline",
+  "description": "Composer Enter policy: Enter inserts a newline, Ctrl/Cmd+Enter sends",
+  "version": "0.2.0",
+  "entry": {
+    "name": "dsh-enter-newline",
+    "inject": []
+  },
+  "client": {
+    "platform": "web"
+  }
+}
